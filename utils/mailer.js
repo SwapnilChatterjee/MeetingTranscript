@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer')
 const fs = require("fs");
 const path = require("path")
 require('dotenv').config()
-const mailer = (receiverEmail, userName, tempFileName, users) =>{
+const mailer = (receiverEmail, userName, tempFileName, users, room) =>{
     var transporter = nodemailer.createTransport({
         service : "hotmail",
         auth : {
@@ -68,12 +68,12 @@ const mailer = (receiverEmail, userName, tempFileName, users) =>{
                 // all users left room, remove the content from global file
                 try {
 
-                    fs.unlink(path.join(__dirname,"..","mytranscript.txt"), (err) => {
+                    fs.unlink(path.join(__dirname,"..",`${room}.txt`), (err) => {
                         if (err) throw err;
-                        console.log('mytranscript.txt was deleted');
+                        console.log(`${room}.txt was deleted`);
                     });
                 } catch (e) {
-                    console.log('Error deleting file mytranscript.txt');
+                    console.log(`Error deleting file ${room}.txt`);
                 }
             }
         }

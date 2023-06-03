@@ -1,5 +1,6 @@
 let user_name = "";
 let user_email = "";
+let meet_room = "";
 let _audioEnabled = true;
 (async function () {
     async function main() {
@@ -129,11 +130,16 @@ let _audioEnabled = true;
          * a new entry in the history).
          */
         // const user_name = document.getElementById("username").value;
-        const roomRequested = location.pathname.substring(1);
-        const room = roomRequested == "" ? 'smartmom' : roomRequested;
+        // const roomRequested = location.pathname.substring(1);
+        // const room = roomRequested == "" ? 'smartmom' : roomRequested;
+        const dummy_list = meet_room.split('/')
+        const room = dummy_list[dummy_list.length-1];
+        console.log(room)
         const user_data = {
+
             user_name,
-            user_email
+            user_email,
+
         }
         socket.emit("join", room, user_data);
     }
@@ -200,11 +206,16 @@ let _audioEnabled = true;
     button.addEventListener("click", async () => {
         if (document.getElementById("username").value === "") {
             alert("Please enter your name");
-        } else {
+        }
+        if (document.getElementById("meetLink").value === "") {
+            alert("Please enter meet ID");
+        }
+        else {
             console.log(document.getElementById("username").value);
             user_name = document.getElementById("username").value;
             console.log(document.getElementById("mailid").value);
             user_email = document.getElementById("mailid").value;
+            meet_room = document.getElementById("meetLink").value;
 
             main();
             login_div.innerHTML = "";

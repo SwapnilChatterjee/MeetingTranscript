@@ -70,7 +70,7 @@ function handle_connection(socket) {
             const joinInfo = "[" + user_data.joiningtime + "] " + user_data.user_name + " joined.\n"
 
             // write to the file that the user joined the chat
-            fs.appendFile('mytranscript.txt', joinInfo, (err) => {
+            fs.appendFile(`${room}.txt`, joinInfo, (err) => {
                 if (err) throw err;
             })
 
@@ -79,7 +79,7 @@ function handle_connection(socket) {
 
             socket.on("disconnect", () => {
                 // when user disconnects, we send the prepared transcript
-                sendTranscript(users[socket.id], socket.id);
+                sendTranscript(users[socket.id], socket.id, room);
 
                 socket.broadcast.to(room).emit("bye", socket.id);
                 // console.log('before: ' + Object.keys(users).length)
@@ -142,7 +142,7 @@ function setupRealtimeTranscription(socket, room) {
 
         try {
             if (speech_to_text.length > 0) {
-                fs.appendFile('mytranscript.txt', final_transcript, (err) => {
+                fs.appendFile(`${room}.txt`, final_transcript, (err) => {
                     if (err) throw err;
                 })
             }
@@ -181,14 +181,15 @@ server.listen(process.env.PORT, () =>
 
 
 //setting up nodemailer
-function sendTranscript(user_data, socketid) {
+function sendTranscript(user_data, socketid, room) {
 
-    const _path = path.join(__dirname, "mytranscript.txt");
+    const _path = path.join(__dirname, `${room}.txt`);
     console.log(_path);
     const tempFileName = createIndividualFileToSend(_path, user_data, socketid);
 
     createGlobalExcel(globalJSON);
+    console.log("USER ", user_data['user_email'], " IS FROM ROOM : ", room)
 
-    mailer(user_data['user_email'],user_data['user_name'], tempFileName, users);
+    mailer(user_data['user_email'],user_data['user_name'], tempFileName, users, room);
 
 }
