@@ -113,4 +113,4 @@ Check out the Developer Documentation at [https://developers.deepgram.com/](http
 
 # Live link: https://smart-mom-dev.herokuapp.com/(deprecated)
 
-# Live link: https://smart-mom.azurewebsites.net/
+# Live link: https://smartminutesofmeeting.azurewebsites.net/   (LIVE LINK)
